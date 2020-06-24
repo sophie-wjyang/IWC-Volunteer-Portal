@@ -1,4 +1,4 @@
-import app from 'firebase/app';
+import app from "firebase/app";
 import 'firebase/auth';
 import 'firebase/firestore';
 
@@ -20,8 +20,8 @@ export const db = app.firestore();
 
 export let user = auth.currentUser;
 
-export const getCurrentUser = () => {
-  return auth.currentUser;
+export const getCurrentUser = async () => {
+  return await auth.currentUser;
 }
 
 export const createUser = (email, password) => {
@@ -47,3 +47,5 @@ export const passwordReset = (email) => {
 export const passwordUpdate = (password) => {
   return auth.currentUser.updatePassword(password);
 }
+
+export default app;

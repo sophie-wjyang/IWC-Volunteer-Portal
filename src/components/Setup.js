@@ -8,7 +8,7 @@ function Setup() {
 
     return(
         <>
-            {getCurrentUser()}
+            Setup
         </>
     )
 }

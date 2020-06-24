@@ -1,14 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
+import { UserContext } from './Providers/UserProvider';
+import app from './Firebase';
 
-import { db, createUser, emailVerification } from './Firebase';
-
-function Signup(props) {
+function Signup() {
     const [email, setEmail] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [sentVerification, setSentVerification] = useState(false);
     const [error, setError] = useState(null);
+
+    let user = useContext(UserContext);
+
+    useEffect(() => {
+        if(user && user.emailVerified) {
+            window.location.replace("/dashboard");
+        }
+    }, [])
 
     const emailChange = (event) => {
         setEmail(event.target.value);
@@ -24,18 +32,24 @@ function Signup(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        createUser(email, password1).then(user => {
-            setError(null);
-            return db.collection("users").doc(`${user.user.uid}`).set({
+        setSentVerification(false);
+        setError(null);
+        app.auth().createUserWithEmailAndPassword(email, password1).then(user => {
+            return app.firestore().collection("users").doc(`${user.user.uid}`).set({
                 quizCompleted: false
-            })}).then(() => {setSentVerification(true); return emailVerification()}).catch(error => {
-                setError(error);
-            });
+            })
+        }).then(() => {
+            setSentVerification(true); 
+            return app.auth().currentUser.sendEmailVerification()
+        }).then(() => {
+            app.auth().signOut();
+        }).catch(error => {
+            setError(error);
+        });
     }
 
     return(
         <div style={{ width: "100%", height: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            {console.log(props)}
             <Card>
                 <Card.Body>
                     <Card.Title>Sign Up</Card.Title>

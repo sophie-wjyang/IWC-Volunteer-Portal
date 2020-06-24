@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
-
-import { db, login, auth } from './Firebase';
+import { UserContext } from './Providers/UserProvider';
+import app, { db, login, auth } from './Firebase';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [sentVerification, setSentVerification] = useState(false);
     const [error, setError] = useState(null);
+
+    let user = useContext(UserContext);
+
+    useEffect(() => {
+        if(user && user.emailVerified) {
+            window.location.replace("/dashboard");
+        }
+    }, [])
 
     const emailChange = (event) => {
         setEmail(event.target.value);
@@ -16,38 +25,48 @@ function Login() {
         setPassword(event.target.value);
     }
 
+    const resendVerification = (event) => {
+        event.preventDefault();
+        setError(null);
+        setSentVerification(false);
+        login(email, password).then(user => {
+            setSentVerification(true);
+            return app.auth().currentUser.sendEmailVerification()
+        }).then(() => {
+            app.auth().signOut();
+        }).catch(error => {
+            setError(error);
+        })
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        setSentVerification(false);
+        setError(null);
         login(email, password).then(user => {
             setError(null);
+            console.log(user)
             if (!user.user.emailVerified) {
                 let temp = {
                     message: 'Email has not been verified.'
                 }
                 setError(temp);
-                Promise.reject();
+                auth.signOut();
             }
             return user;
         }).then(user => {
-            db.collection("users").doc(`${user.user.uid}`).get().then(doc => {
-                if (doc.data().quizCompleted) {
-                    console.log("here");
-                    window.location.replace("/dashboard");
-                } else {
-                    console.log("there");
-                    window.location.replace("/setup");
-                }
-            })
+            if (user.user.emailVerified) {
+                window.location.replace("/dashboard");
+            }
         }).catch(error => {
             if (error.message !== 'Email has not been verified.') {
+                alert(error);
                 setError(error);
             }
         });
     }
 
-    console.log(auth.currentUser + "hi");
-
-    return(
+    return (
         <div style={{ width: "100%", height: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             <Card>
                 <Card.Body>
@@ -72,7 +91,9 @@ function Login() {
                 </Card.Body>
             </Card>
             <br />
-            <Alert variant="danger" show={error}>{error ? error.message : ""}</Alert>
+            <Alert variant="danger" show={error}>{error ? `${error.message} ` : ""}
+            {(error && error.message === 'Email has not been verified.') ? (<>Click <strong onClick={resendVerification}>here</strong> to resend your verification email.</>) : (<></>)}</Alert>
+            <Alert variant="success" show={sentVerification}>A verification email has been sent to your inbox.</Alert>
         </div>
     );
 }

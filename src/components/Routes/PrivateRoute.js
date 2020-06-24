@@ -1,36 +1,34 @@
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom'
-import { auth } from '../Firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { useEffect, useState } from "react";
+import { Route, Redirect } from "react-router-dom";
+// import app from "../Firebase";
+import { UserContext } from '../Providers/UserProvider';
+import { app, getCurrentUser } from '../Firebase';
 
-let user = auth.currentUser;
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
-    const [user, loading, error] = useAuthState(auth);
-
-    if(loading) {
-        return (
-            <></>
-        )
-    }
-
-    if(error) {
-        return (
-            <>{error}</>
-        )
-    }
-
-    if(user) {
-        return (
-            <Route {...rest} render={(props)=> {
-                <Component {...props} />
-            }} />
-        )
-    }
-
-    return <Redirect to='/login' />
-
-    
+async function getUser() {
+  let user = await getCurrentUser();
+  return user;
 }
 
-export default PrivateRoute;
+const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getCurrentUser().then(user => setUser(user)).catch(err => console.log(err));
+  });
+
+  return (
+    <Route
+      {...rest}
+      render={routeProps =>
+        user ? (
+          <RouteComponent {...routeProps} />
+        ) : (<></>
+          /*<Redirect to="/login" />*/
+        )
+      }
+    />
+  );
+};
+
+
+export default PrivateRoute

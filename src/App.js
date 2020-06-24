@@ -23,9 +23,9 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route path="/signup" component={Signup} />
         <Route path="/login" component={Login} />
-        <PrivateRoute path="/setup" component={Setup} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
-        <PrivateRoute path="/opportunities" component={Opportunities} />
+        <Route path="/setup" component={Setup} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/opportunities" component={Opportunities} />
         <Route path="/signout" component={Signout} />
       </Router>
     </div>

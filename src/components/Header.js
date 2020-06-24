@@ -1,21 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-
-import { auth } from './Firebase';
+import { UserContext } from './Providers/UserProvider';
 
 function Header() {
-
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                setUser(authUser);
-            } else {
-                setUser(null);
-            }
-        })
-    })
+    let user = useContext(UserContext);
     
     return(
         <>

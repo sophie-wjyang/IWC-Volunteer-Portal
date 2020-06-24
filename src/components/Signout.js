@@ -1,13 +1,9 @@
-import React from 'react';
-import { getCurrentUser, signOut } from './Firebase';
+import React, { useContext } from 'react';
+import app from './Firebase';
+import UserContext from './Providers/UserProvider';
 
 function Signout() {
-    if (getCurrentUser()) {
-        signOut();
-        window.location.replace("/");
-    } else {
-        window.location.replace("/login");
-    }
+    app.auth().signOut().then(() => {window.location.replace("/")}).catch(error => console.log(error));
     
     return(
         <>
