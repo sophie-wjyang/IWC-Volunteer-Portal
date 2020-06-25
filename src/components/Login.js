@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { UserContext } from './Providers/UserProvider';
-import app, { db, login, auth } from './Firebase';
+import app, { login, auth } from './Firebase';
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -15,7 +15,7 @@ function Login() {
         if(user && user.emailVerified) {
             window.location.replace("/dashboard");
         }
-    }, [])
+    }, [user])
 
     const emailChange = (event) => {
         setEmail(event.target.value);
@@ -80,7 +80,7 @@ function Login() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control required type="password" placeholder="Password" value={password} onChange={passwordChange} />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" disabled={email === '' || password.length < 6}>
                             Submit
                         </Button>
                     </Form>

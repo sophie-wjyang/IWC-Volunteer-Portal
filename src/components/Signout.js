@@ -1,13 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import app from './Firebase';
-import UserContext from './Providers/UserProvider';
+import { Redirect } from 'react-router-dom'
 
 function Signout() {
-    app.auth().signOut().then(() => {window.location.replace("/")}).catch(error => console.log(error));
+    app.auth().signOut().catch(error => console.log(error));
     
     return(
-        <>
-        </>
+        <Redirect to="/" />
     )
 }
 

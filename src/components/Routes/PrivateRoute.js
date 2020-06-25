@@ -1,29 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Route, Redirect } from "react-router-dom";
-// import app from "../Firebase";
-import { UserContext } from '../Providers/UserProvider';
-import { app, getCurrentUser } from '../Firebase';
-
-async function getUser() {
-  let user = await getCurrentUser();
-  return user;
-}
+import app from "../Firebase";
+import Loading from '../Loading';
 
 const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
   const [user, setUser] = useState(null);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
-    getCurrentUser().then(user => setUser(user)).catch(err => console.log(err));
-  });
+    app.auth().onAuthStateChanged(user => {
+      setUser(user)
+      setPending(false);
+    })
+  }, []);
+
+  if (pending) {
+    return <Loading />;
+  }
 
   return (
     <Route
       {...rest}
       render={routeProps =>
-        user ? (
+        !!user ? (
           <RouteComponent {...routeProps} />
-        ) : (<></>
-          /*<Redirect to="/login" />*/
+        ) : (
+          <Redirect to="/login" />
         )
       }
     />

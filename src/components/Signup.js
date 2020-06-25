@@ -16,7 +16,7 @@ function Signup() {
         if(user && user.emailVerified) {
             window.location.replace("/dashboard");
         }
-    }, [])
+    }, [user])
 
     const emailChange = (event) => {
         setEmail(event.target.value);
