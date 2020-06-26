@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Setup from './components/Setup';
 import Dashboard from './components/Dashboard';
 import Opportunities from './components/Opportunities';
+import Admin from './components/Admin';
 import Signout from './components/Signout';
 
 import PrivateRoute from './components/Routes/PrivateRoute';
@@ -26,6 +27,7 @@ function App() {
         <PrivateRoute path="/setup" component={Setup} />
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/opportunities" component={Opportunities} />
+        <PrivateRoute path="/admin" component={Admin} />
         <Route path="/signout" component={Signout} />
       </Router>
     </div>

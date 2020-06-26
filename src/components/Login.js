@@ -60,7 +60,6 @@ function Login() {
             }
         }).catch(error => {
             if (error.message !== 'Email has not been verified.') {
-                alert(error);
                 setError(error);
             }
         });
@@ -80,13 +79,13 @@ function Login() {
                             <Form.Label>Password</Form.Label>
                             <Form.Control required type="password" placeholder="Password" value={password} onChange={passwordChange} />
                         </Form.Group>
-                        <Button variant="primary" type="submit" disabled={email === '' || password.length < 6}>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} type="submit" disabled={email === '' || password.length < 6}>
                             Submit
                         </Button>
                     </Form>
                     <br />
                     <Card.Text>
-                        <small className="text-muted">Don't have an account? Sign up <a href="/signup">here</a>.</small>
+                        <small className="text-muted">Don't have an account? Sign up <a href="/signup" style={{ color: "#FC4445" }}>here</a>.</small>
                     </Card.Text>
                 </Card.Body>
             </Card>

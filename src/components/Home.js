@@ -1,10 +1,7 @@
 import React from 'react';
 import { Jumbotron, Button } from 'react-bootstrap';
-import { auth } from './Firebase';
 
 function Home() {
-    console.log("hi");
-    console.log(auth.currentUser);
     return (
         <>
             <Jumbotron>
@@ -13,7 +10,7 @@ function Home() {
                     Please log in or sign up to view opportunities.
                 </p>
                 <p>
-                    <Button href="https://impactwithoutcontact.ca" variant="primary">Go to IWC Home</Button>
+                    <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} href="https://impactwithoutcontact.ca">Go to IWC Home</Button>
                 </p>
             </Jumbotron>
         </>

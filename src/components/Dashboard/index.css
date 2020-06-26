@@ -1,0 +1,69 @@
+.dashboard-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.dashboard-profile {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10vh;
+}
+
+.dashboard-opportunities {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10vh;
+}
+
+/*.dashboard-user-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+}*/
+
+.dashboard-opportunity-card {
+    width: 70%;
+}
+
+.dashboard-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.dashboard-item-name {
+    width: 15%;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        width: 90%;
+    }
+
+    .dashboard-item-name {
+        width: 40%;
+    }
+
+    .dashboard-profile {
+        width: 100%;
+    }
+
+    .dashboard-opportunities {
+        width: 100%;
+    }
+
+    .dashboard-opportunity-card {
+        width: 100%;
+    }
+}

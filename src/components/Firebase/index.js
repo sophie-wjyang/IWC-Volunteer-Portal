@@ -48,4 +48,14 @@ export const passwordUpdate = (password) => {
   return auth.currentUser.updatePassword(password);
 }
 
+export const getOpportunities = (opportunitiesRef, cohort) => {
+  let opportunities = [];
+  opportunitiesRef.where("cohort", "==", `${cohort}`).limit(3).get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      opportunities.push(doc.data());
+    })
+  });
+  return opportunities;
+}
+
 export default app;

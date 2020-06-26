@@ -36,6 +36,7 @@ function Signup() {
         setError(null);
         app.auth().createUserWithEmailAndPassword(email, password1).then(user => {
             return app.firestore().collection("users").doc(`${user.user.uid}`).set({
+                admin: false,
                 quizCompleted: false
             })
         }).then(() => {
@@ -67,13 +68,13 @@ function Signup() {
                             <Form.Control required type="password" placeholder="Password" value={password2} onChange={password2Change} />
                         </Form.Group>
                         {/*incorrect ? (<><Form.Text style={{ color: "#DC3545"}}>An error has occurred!</Form.Text><br /></>) : (<></>) */}
-                        <Button disabled={password1 !== password2 || password1 === '' || email === '' || password1.length < 6} variant="primary" type="submit">
+                        <Button disabled={password1 !== password2 || password1 === '' || email === '' || password1.length < 6} style={{ backgroundColor: "#FC4445", border: "#FC4445" }} type="submit">
                             Submit
                         </Button>
                     </Form>
                     <br />
                     <Card.Text>
-                        <small className="text-muted">Already have an account? Log in <a href="/login">here</a>.</small>
+                        <small className="text-muted">Already have an account? Log in <a href="/login" style={{ color: "#FC4445" }}>here</a>.</small>
                     </Card.Text>
                 </Card.Body>
             </Card>

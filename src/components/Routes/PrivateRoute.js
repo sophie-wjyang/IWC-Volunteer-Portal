@@ -9,7 +9,7 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
 
   useEffect(() => {
     app.auth().onAuthStateChanged(user => {
-      setUser(user)
+      setUser(user);
       setPending(false);
     })
   }, []);
@@ -33,4 +33,4 @@ const PrivateRoute = ({ component: RouteComponent, ...rest }) => {
 };
 
 
-export default PrivateRoute
+export default PrivateRoute;
