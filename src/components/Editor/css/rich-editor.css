@@ -7,6 +7,7 @@
 
  .RichEditor-root {
     background: #fff;
+    border: 1px solid #ddd;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     padding: 15px;

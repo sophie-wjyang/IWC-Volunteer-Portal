@@ -2,12 +2,15 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { UserContext } from './Providers/UserProvider';
 import app, { login, auth } from './Firebase';
+import EmailModal from './EmailModal';
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [sentVerification, setSentVerification] = useState(false);
     const [error, setError] = useState(null);
+
+    const [emailModal, setEmailModal] = useState(false);
 
     let user = useContext(UserContext);
 
@@ -67,7 +70,7 @@ function Login() {
 
     return (
         <div style={{ width: "100%", height: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            <Card>
+            <Card className="credentials-card">
                 <Card.Body>
                     <Card.Title>Log In</Card.Title>
                     <Form onSubmit={handleSubmit}>
@@ -78,6 +81,8 @@ function Login() {
                         <Form.Group controlId="formPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control required type="password" placeholder="Password" value={password} onChange={passwordChange} />
+                            <Form.Text><strong onClick={() => setEmailModal(true)}>Forgot your password?</strong></Form.Text>
+                            <EmailModal show={emailModal} onHide={() => setEmailModal(false)} />
                         </Form.Group>
                         <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} type="submit" disabled={email === '' || password.length < 6}>
                             Submit

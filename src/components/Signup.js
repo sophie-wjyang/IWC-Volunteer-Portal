@@ -51,7 +51,7 @@ function Signup() {
 
     return(
         <div style={{ width: "100%", height: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            <Card>
+            <Card className="credentials-card">
                 <Card.Body>
                     <Card.Title>Sign Up</Card.Title>
                     <Form onSubmit={handleSubmit}>

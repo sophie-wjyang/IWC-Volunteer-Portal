@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import app, { db } from '../Firebase';
 import Loading from '../Loading';
+import Opportunity from './Opportunity';
+
+import './index.css';
 
 function Opportunities() {
 
     // const [user, setUser] = useState(null);
-    // const [pending, setPending] = useState(true);
+    const [pending, setPending] = useState(true);
     const [complete, setComplete] = useState(false);
     const [error, setError] = useState(false);
     const [opportunities, setOpportunities] = useState(null);
@@ -20,34 +23,42 @@ function Opportunities() {
                 if (doc.data().quizCompleted) {
                     // setUserData(doc.data());
                     setComplete(true);
-                    return doc.data().cohort;
                 } else {
                     window.location.replace("/setup");
                 }
-            }).then(cohort => {
-                console.log(cohort);
+            }).then(() => {
                 let opps = [];
-                const query = db.collection("opportunities");
-                query.get().then((querySnapshot) => {
+                db.collection("opportunities").orderBy('updated', 'desc').get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
-                        opps.push(doc.data());
+                        opps.push(doc);
                     });
-                    console.log(opps);
                     setOpportunities(opps);
-                })
+                    setPending(false);
+                }).catch(error => setError(error));
             }).catch(error => setError(error));
-            //setPending(false);
         });
     }, []);
 
     return (
         <>
-            {complete ? <>
-
-                <Alert variant="danger" show={error}>{error ? error.message : ""}</Alert>
+            {complete && !pending ? <>
+                <div className="opportunities-container">
+                    {(opportunities) ? (<div className="opportunities-opportunities">
+                        <h3>Opportunities List</h3>
+                        <div className="opportunities-card-container">{opportunities.map(opportunity => <Opportunity
+                            opportunity={opportunity.data()}
+                        />)}</div>
+                    </div>) : (<div className="opportunities-opportunities">
+                        <h3>List</h3>
+                        <br />
+                        <p>There are currently no opportunities available.</p>
+                    </div>)}
+                    <Alert variant="danger" show={error}>{error ? error.message : ""}</Alert>
+                </div>
+                
             </> : <>
-                <Loading />
-            </>}
+                    <Loading />
+                </>}
         </>
     )
 }

@@ -29,7 +29,7 @@ function App() {
         <PrivateRoute path="/dashboard" component={Dashboard} />
         <PrivateRoute path="/opportunities" component={Opportunities} />
         <PrivateRoute path="/admin" component={Admin} />
-        <PrivateRoute path="/edit" componeont={Edit} />
+        <PrivateRoute path="/edit" component={Edit} />
         <Route path="/signout" component={Signout} />
       </Router>
     </div>

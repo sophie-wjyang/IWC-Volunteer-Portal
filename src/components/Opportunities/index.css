@@ -1,0 +1,43 @@
+.opportunities-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.opportunities-opportunities {
+    width: 80%;
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.opportunities-card-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.opportunities-opportunity-card {
+    width: 23%;
+    margin-right: auto;
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .opportunities-card-section {
+        width: 100%;
+        margin: 10px;
+    }
+
+    .opportunities-opportunity-card {
+        width: 100%;
+    }
+}

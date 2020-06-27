@@ -69,7 +69,7 @@ function Setup() {
 
     return (
         <div style={{ width: "100%", paddingTop: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            <Card>
+            <Card className="card-form-profile">
                 <Card.Body>
                     <Card.Title>Help Us Get To Know You Better</Card.Title>
                     <Form onSubmit={handleSubmit}>

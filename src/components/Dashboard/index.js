@@ -4,6 +4,7 @@ import app, { db } from '../Firebase'
 import Loading from '../Loading';
 import './index.css';
 import Opportunity from './Opportunity';
+import PasswordModal from './PasswordModal';
 
 function Dashboard() {
 
@@ -14,6 +15,7 @@ function Dashboard() {
     const [opportunities, setOpportunities] = useState(null);
 
     const [userData, setUserData] = useState(null);
+    const [passwordModal, setPasswordModal] = useState(false);
 
     useEffect(() => {
         app.auth().onAuthStateChanged(user => {
@@ -55,11 +57,11 @@ function Dashboard() {
                 <div style={{ display: "flex", width: "100vw", flexDirection: "column", alignItems: "center" }}>
                     <div style={{ width: "80%", margin: "20px" }}>
                         <h1>IWC Dashboard</h1>
-                        <p>Welcome to your IWC dashboard! Here, you’ll find your profile, which includes your top cohort, skills, and hobbies (you can change this at any time). Based on this, we’ll recommend 3 personalized opportunities for you. If you’re not interested in the ones recommended, you can also go to “opportunities” and view all of our volunteering initiatives by cohort, skills required, and more.</p>
-                        <br></br>
-                        <p>One important distinction to note is general opportunities versus partnerships. Partnerships are organizations that have established a cooperation with IWC, meaning you won’t need to apply for the position. We’ll guide you through the initiative and connect you to the organization. General opportunities, on the other hand, are organizations (not affiliated with IWC) that are looking for volunteers. We’ll provide you with a description, requirements, and a link to sign up, but we won’t be able to connect you with the organization. If, however, they are unable to give volunteer hours, we’re happy to sign it off for you.</p>
+                        <p>Welcome to your IWC dashboard! Here, you’ll find your profile, which includes your top cohort, skills, and hobbies (you can change this at any time). Here you’ll also find 3 personalized opportunity recommendations. If you’re not interested in the ones recommended, you can also go to <a className="link" href="/opportunities">opportunities</a> and view all of our volunteering initiatives.</p>
 
-                        <p>If at any time you have any questions or concerns, feel free to email us at <a className="link" href="mailto:impactwithoutcontact@gmail.com">impactwithoutcontact@gmail.com</a> or message us on instagram <a className="link" href="https://instagram.com/impactwithoutcontact">@impactwithoutcontact</a>.</p>
+                        <p>One important distinction to note is general opportunities versus partnerships. Partnerships are organizations that have established a cooperation with IWC, meaning you won’t need to apply for the position. We’ll guide you through the initiative and connect you to the organization. General opportunities, on the other hand, are organizations not affiliated with IWC that are looking for volunteers. We’ll provide you with a description of the role, requirements, and a link to sign up, but we won’t be able to connect you with the organization. If, however, they are unable to give volunteer hours, we’re happy to sign it off for you.</p>
+
+                        <p>If at any time you have any questions or concerns, feel free to email us at <a className="link" href="mailto:impactwithoutcontact@gmail.com">impactwithoutcontact@gmail.com</a> or message us on instagram <a className="link" href="https://instagram.com/impactwithoutcontact" target="_blank" rel="noopener noreferrer">@impactwithoutcontact</a>.</p>
                     </div>
                     <div className="dashboard-container">
                         <div className="dashboard-profile">
@@ -114,9 +116,15 @@ function Dashboard() {
                                     {userData.hobbies.map(hobby => <h6>{hobby}</h6>)}
                                 </div>
                             </div>
-                            <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }}>
-                                Edit Profile
-                            </Button>
+                            <div style={{ width: "90%", display: "flex", flexDirection: "row", justifyContent: "flex-start" }}>
+                                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", marginRight: "20px" }} onClick={() => window.location.replace("/edit")}>
+                                    Edit Profile
+                                </Button>
+                                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", marginRight: "20px" }} onClick={() => setPasswordModal(true)}>
+                                    Change Password
+                                </Button>
+                                <PasswordModal show={passwordModal} onHide={() => setPasswordModal(false)} />
+                            </div>
                         </div>
                         {(opportunities) ? (<div className="dashboard-opportunities">
                             <h3>Suggested Opportunities</h3>

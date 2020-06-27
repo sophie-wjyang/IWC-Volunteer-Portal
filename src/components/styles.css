@@ -1,0 +1,23 @@
+.card-form-profile {
+    width: 600px;
+}
+
+.credentials-card {
+    width: 330px;
+}
+
+@media (max-width: 768px) {
+    .edit-profile-container {
+        width: 100%;
+        margin: 10px;
+    }
+
+    .card-form-profile {
+        width: 90%;
+    }
+
+    .credentials-card {
+        width: 90%;
+    }
+}
+
