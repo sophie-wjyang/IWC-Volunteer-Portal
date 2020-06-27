@@ -12,7 +12,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 10vh;
 }
 
 .dashboard-opportunities {
@@ -20,7 +19,20 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 10vh;
+    flex-wrap: wrap;
+}
+
+.dashboard-opportunities-card-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: wrap;
+}
+
+.link {
+    color: #FC4445;
 }
 
 /*.dashboard-user-info {
@@ -31,7 +43,9 @@
 }*/
 
 .dashboard-opportunity-card {
-    width: 70%;
+    width: 45%;
+    margin-right: auto;
+    margin-top: 16px;
 }
 
 .dashboard-item {

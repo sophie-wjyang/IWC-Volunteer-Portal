@@ -16,6 +16,7 @@ function Setup() {
     const [skills, setSkills] = useState([]);
     const [hobbies, setHobbies] = useState(null);
     const [bio, setBio] = useState("");
+    const [admin, setAdmin] = useState(false);
 
     const [error, setError] = useState(null);
 
@@ -33,6 +34,9 @@ function Setup() {
             if (doc.data().quizCompleted) {
                 window.location.replace("/dashboard");
             }
+            if (doc.data().admin) {
+                setAdmin(true);
+            }
         })
     }
 
@@ -49,7 +53,7 @@ function Setup() {
             hobbies: hobbies,
             bio: `${bio}`,
             quizCompleted: true,
-            admin: false,
+            admin: admin,
         }).then(() => {
             window.location.replace("/dashboard");
         }).catch(error => setError(error));

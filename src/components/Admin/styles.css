@@ -3,5 +3,48 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 30px;
+}
+
+.admin-opportunities {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.admin-opportunities-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+.admin-sort {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.opportunity-card {
+    width: 30%;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+
+    .admin-opportunities {
+        width: 90%;
+    }
+
+    .opportunity-card {
+        width: 100%;
+    }
 }

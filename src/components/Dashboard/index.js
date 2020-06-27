@@ -27,16 +27,13 @@ function Dashboard() {
                     window.location.replace("/setup");
                 }
             }).then(cohort => {
-                console.log(cohort);
                 let opps = [];
-                const query = db.collection("opportunities").where("cohort", "==", `${cohort}`).limit(3);
-                query.get().then((querySnapshot) => {
+                db.collection("opportunities").where("cohort", "==", `${cohort}`).orderBy('updated', 'desc').limit(4).get().then((querySnapshot) => {
                     querySnapshot.forEach(doc => {
-                        opps.push(doc.data());
+                        opps.push(doc);
                     });
-                    console.log(opps);
                     setOpportunities(opps);
-                })
+                }).catch(error => setError(error));
             }).catch(error => setError(error));
             //setPending(false);
         });
@@ -56,6 +53,14 @@ function Dashboard() {
         <>
             {complete ? <>
                 <div style={{ display: "flex", width: "100vw", flexDirection: "column", alignItems: "center" }}>
+                    <div style={{ width: "80%", margin: "20px" }}>
+                        <h1>IWC Dashboard</h1>
+                        <p>Welcome to your IWC dashboard! Here, you’ll find your profile, which includes your top cohort, skills, and hobbies (you can change this at any time). Based on this, we’ll recommend 3 personalized opportunities for you. If you’re not interested in the ones recommended, you can also go to “opportunities” and view all of our volunteering initiatives by cohort, skills required, and more.</p>
+                        <br></br>
+                        <p>One important distinction to note is general opportunities versus partnerships. Partnerships are organizations that have established a cooperation with IWC, meaning you won’t need to apply for the position. We’ll guide you through the initiative and connect you to the organization. General opportunities, on the other hand, are organizations (not affiliated with IWC) that are looking for volunteers. We’ll provide you with a description, requirements, and a link to sign up, but we won’t be able to connect you with the organization. If, however, they are unable to give volunteer hours, we’re happy to sign it off for you.</p>
+
+                        <p>If at any time you have any questions or concerns, feel free to email us at <a className="link" href="mailto:impactwithoutcontact@gmail.com">impactwithoutcontact@gmail.com</a> or message us on instagram <a className="link" href="https://instagram.com/impactwithoutcontact">@impactwithoutcontact</a>.</p>
+                    </div>
                     <div className="dashboard-container">
                         <div className="dashboard-profile">
                             <h2>Welcome, {userData.name}</h2>
@@ -113,25 +118,18 @@ function Dashboard() {
                                 Edit Profile
                             </Button>
                         </div>
-                        {(opportunities && opportunities.length) ? (<div className="dashboard-opportunities">
+                        {(opportunities) ? (<div className="dashboard-opportunities">
                             <h3>Suggested Opportunities</h3>
-                            <br />
-                            {opportunities.map(opportunity => <Opportunity 
-                                name={opportunity.name}
-                                organization={opportunity.organization}
-                                description={opportunity.description}
-                                about={opportunity.about}
-                                requirements={opportunity.requirements}
-                                skills={opportunity.skills}
-                                volunteer={opportunity.volunteer}
-                            />)}
+                            <div className="dashboard-opportunities-card-container">{opportunities.map(opportunity => <Opportunity
+                                opportunity={opportunity.data()}
+                            />)}</div>
                         </div>) : (<div className="dashboard-opportunities">
                             <h3>Suggested Opportunities</h3>
                             <br />
                             <p>There are currently no suggested opportunities.</p>
                         </div>)}
                     </div>
-                    <Alert variant="danger" show={error} style={{width: "90%"}}>{error ? `${error.message} ` : ""}</Alert>
+                    <Alert variant="danger" show={error} style={{ width: "90%" }}>{error ? `${error.message} ` : ""}</Alert>
                 </div>
             </> : <>
                     <Loading />

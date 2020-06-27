@@ -1,11 +1,11 @@
 import React from 'react';
-import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import { Editor } from 'draft-js';
 
 import './css/example.css';
 import './css/draft.css';
-import './css/rich-editor.css';
+import './css/rich-editor-readonly.css';
 
-const { useRef, useCallback} = React;
+const { useRef } = React;
 
 function ReadText(props) {
   const editor = useRef(null);
@@ -14,41 +14,10 @@ function ReadText(props) {
     if (editor.current) editor.current.focus();
   };
 
-  const handleKeyCommand = useCallback(
-    (command, editorState) => {
-      const newState = RichUtils.handleKeyCommand(editorState, command);
-      if (newState) {
-        props.setEditorState(newState);
-        return 'handled';
-      }
-      return 'not-handled';
-    },
-    [props],
-  );
-
-  const mapKeyToEditorCommand = useCallback(
-    e => {
-      switch (e.keyCode) {
-        case 9: // TAB
-          const newEditorState = RichUtils.onTab(
-            e,
-            props.editorState,
-            4 /* maxDepth */,
-          );
-          if (newEditorState !== props.editorState) {
-            props.setEditorState(newEditorState);
-          }
-          return null;
-        default:
-          return getDefaultKeyBinding(e);
-      }
-    },
-    [props],
-  );
-
   // If the user changes block type before entering any text, we can
   // either style the placeholder or hide it. Let's just hide it now.
-  let className = 'RichEditor-editor';
+  // let className = 'RichEditor-editor';
+  let className = '';
   var contentState = props.editorState.getCurrentContent();
   if (!contentState.hasText()) {
     if (
@@ -62,19 +31,16 @@ function ReadText(props) {
   }
 
   return (
-    <div className="RichEditor-root">
+    <div className="RichEditor-root-readOnly">
       <div className={className} onClick={focus}>
         <Editor
           blockStyleFn={getBlockStyle}
           customStyleMap={styleMap}
           editorState={props.editorState}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={mapKeyToEditorCommand}
-          onChange={props.setEditorState}
-          placeholder="Description"
+          placeholder="No Description"
+          onChange={() => {}}
           ref={editor}
-          spellCheck={true}
-          readOnly={props.readOnly}
+          readOnly={true}
         />
       </div>
     </div>

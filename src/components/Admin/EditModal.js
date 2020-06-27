@@ -1,49 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, /*useEffect*/ } from 'react';
 import { Modal, Button, Form, Alert, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import EditText from '../Editor/EditText';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
 import { db } from '../Firebase';
 
-function NewModal(props) {
+function EditModal(props) {
 
-    const [opportunity, setOpportunity] = useState("");
-    const [organization, setOrganization] = useState("");
-    const [partnership, setPartnership] = useState(false);
-    const [cohort, setCohort] = useState("Select");
-    const [skills, setSkills] = useState([]);
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [opportunity, setOpportunity] = useState(props.opportunity.name);
+    const [organization, setOrganization] = useState(props.opportunity.organization);
+    const [partnership, setPartnership] = useState(props.opportunity.partnership);
+    const [cohort, setCohort] = useState(props.opportunity.cohort);
+    const [skills, setSkills] = useState(props.opportunity.skills);
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.description)));
+
+    const id = props.id;
 
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+    const [deleted, setDeleted] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+
+    /*useEffect(() => {
+        db.collection("opportunities").doc(`${props.id}`).get().then(doc => {
+            setOpportunity(doc.data().name);
+            setOrganization(doc.data().organization);
+            setPartnership(doc.data().partnership);
+            setCohort(doc.data().cohort);
+            setSkills(doc.data().skills);
+            setEditorState(EditorState.createWithContent(convertFromRaw(doc.data().description)));
+        }).catch(error => setError(error));
+    }, [props])*/
 
     const save = () => {
 
-        db.collection("opportunities").add({
+        db.collection("opportunities").doc(`${id}`).update({
             name: `${opportunity}`,
             organization: `${organization}`,
             partnership: partnership,
             cohort: `${cohort}`,
             skills: skills,
             description: convertToRaw(editorState.getCurrentContent()),
-            added: new Date(Date.now()),
             updated: new Date(Date.now())
         }).then(() => {
-            clear();
             setSuccess("The opportunity was successfully saved.")
+            window.location.reload();
         }).catch(error => {
             setError(error);
         });
     }
 
-    const clear = () => {
-        setError(null);
-        setSuccess(null);
-        setOpportunity("");
-        setOrganization("");
-        setPartnership(false);
-        setCohort("Select");
-        setSkills([]);
-        setEditorState(EditorState.createEmpty());
+    const deleteOpportunity = () => {
+        db.collection("opportunities").doc(`${id}`).delete().then(() => {
+            setSuccess("The opportunity was successfully deleted.")
+            setDeleted(true);
+        }).catch(error => setError(error));
     }
 
     function renderTooltip(props) {
@@ -62,7 +72,7 @@ function NewModal(props) {
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title>New Opportunity</Modal.Title>
+                <Modal.Title>Edit Opportunity</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -76,7 +86,7 @@ function NewModal(props) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Partnership/Opportunity</Form.Label>
-                        <Form.Check type="checkbox" label="This is a partnership" checked={partnership} value={partnership} onChange={() => {setPartnership(!partnership);}} />
+                        <Form.Check type="checkbox" label="This is a partnership" checked={partnership} onChange={() => { setPartnership(!partnership); }} />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Opportunity Cohort</Form.Label>
@@ -124,11 +134,19 @@ function NewModal(props) {
             <Modal.Footer>
                 <Alert variant="danger" show={error}>{error ? `${error.message}` : ""}</Alert>
                 <Alert variant="success" show={success}>{success}</Alert>
-                <Button variant="primary" onClick={clear}>Clear</Button>
-                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === []} onClick={save}>Save</Button>
+                <Button variant="primary" onClick={() => setDeleteModal(true)} disabled={deleted}>Delete</Button>
+                <Modal show={deleteModal} onHide={() => setDeleteModal(false)} size="sm" aria-labelledby="modal-new-opportunities" centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Are you sure you want to delete this opportunity?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {deleteOpportunity(); window.location.reload()}}>Yes I'm sure</Button>
+                    </Modal.Body>
+                </Modal>
+                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === [] || deleted} onClick={save}>Save</Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default NewModal;
+export default EditModal;
