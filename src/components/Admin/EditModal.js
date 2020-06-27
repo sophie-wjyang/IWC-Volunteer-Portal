@@ -53,6 +53,7 @@ function EditModal(props) {
         db.collection("opportunities").doc(`${id}`).delete().then(() => {
             setSuccess("The opportunity was successfully deleted.")
             setDeleted(true);
+            setDeleteModal(false);
         }).catch(error => setError(error));
     }
 
@@ -140,7 +141,7 @@ function EditModal(props) {
                         <Modal.Title>Are you sure you want to delete this opportunity?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {deleteOpportunity(); window.location.reload()}}>Yes I'm sure</Button>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {deleteOpportunity();}}>Yes I'm sure</Button>
                     </Modal.Body>
                 </Modal>
                 <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === [] || deleted} onClick={save}>Save</Button>

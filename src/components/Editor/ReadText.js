@@ -1,14 +1,18 @@
 import React from 'react';
-import { Editor } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
 import './css/example.css';
 import './css/draft.css';
 import './css/rich-editor-readonly.css';
 
 const { useRef } = React;
+const linkifyPlugin = createLinkifyPlugin();
 
 function ReadText(props) {
   const editor = useRef(null);
+
+  
 
   const focus = () => {
     if (editor.current) editor.current.focus();
@@ -38,9 +42,10 @@ function ReadText(props) {
           customStyleMap={styleMap}
           editorState={props.editorState}
           placeholder="No Description"
-          onChange={() => {}}
+          onChange={props.setEditorState}
           ref={editor}
           readOnly={true}
+          plugins={[linkifyPlugin]}
         />
       </div>
     </div>

@@ -1,11 +1,15 @@
 import React from 'react';
-import {Editor, RichUtils, getDefaultKeyBinding} from 'draft-js';
+import {RichUtils, getDefaultKeyBinding} from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createLinkifyPlugin from 'draft-js-linkify-plugin';
 
 import './css/example.css';
 import './css/draft.css';
 import './css/rich-editor.css';
 
 const { useRef, useCallback} = React;
+const linkifyPlugin = createLinkifyPlugin();
+const plugins = [linkifyPlugin];
 
 function EditText(props) {
   const editor = useRef(null);
@@ -91,6 +95,7 @@ function EditText(props) {
           placeholder="Description"
           ref={editor}
           spellCheck={true}
+          plugins={plugins}
         />
       </div>
     </div>

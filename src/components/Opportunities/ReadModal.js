@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, Badge } from 'react-bootstrap';
 import ReadText from '../Editor/ReadText';
 import { EditorState, convertFromRaw,  } from 'draft-js';
@@ -15,7 +15,7 @@ function ReadModal(props) {
 
     const added = props.opportunity.added.toDate().toLocaleDateString(undefined, options);
     const updated = props.opportunity.updated.toDate().toLocaleDateString(undefined, options);
-    const editorState = EditorState.createWithContent(convertFromRaw(props.opportunity.description));
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.description)));
 
     
 
@@ -49,7 +49,7 @@ return (
                 {skills.map(skill => <li>{skill}</li>)}
             </ul>
             <h6>Description: </h6>
-            <ReadText editorState={editorState} />
+            <ReadText editorState={editorState} setEditorState={setEditorState} />
         </Modal.Body>
         <Modal.Footer>
             <small style={{ marginRight: "auto" }}>Posted on {added}</small>
