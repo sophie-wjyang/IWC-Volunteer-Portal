@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
-import ReadModal from './ReadModal';
+import ReadModal from '../Opportunities/ReadModal';
 
 function Opportunity(props) {
-    const opportunity = props.opportunity;
+    const opportunity = props.opportunity.data();
     const [showModal, setShowModal] = useState(false);
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -25,7 +25,7 @@ function Opportunity(props) {
                 </Card.Text>
                 <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => { setShowModal(true) }}>More Info</Button>
             </Card.Footer>
-            <ReadModal show={showModal} onHide={() => { setShowModal(false) }} opportunity={opportunity} />
+            <ReadModal show={showModal} onHide={() => { setShowModal(false) }} opportunity={props.opportunity} user={props.user} />
         </Card >
     )
 }

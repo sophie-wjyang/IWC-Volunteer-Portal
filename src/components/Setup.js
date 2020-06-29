@@ -15,8 +15,10 @@ function Setup() {
     const [cohort, setCohort] = useState("Select");
     const [skills, setSkills] = useState([]);
     const [hobbies, setHobbies] = useState(null);
+    const [languages, setLanguages] = useState([]);
     const [bio, setBio] = useState("");
     const [admin, setAdmin] = useState(false);
+    const [heard, setHeard] = useState("");
 
     const [error, setError] = useState(null);
 
@@ -52,8 +54,11 @@ function Setup() {
             skills: skills,
             hobbies: hobbies,
             bio: `${bio}`,
+            languages: languages,
+            heard: `${heard}`,
             quizCompleted: true,
             admin: admin,
+            completed: [""]
         }).then(() => {
             window.location.replace("/dashboard");
         }).catch(error => setError(error));
@@ -345,6 +350,93 @@ function Setup() {
                                 <option value="Lifestyle">Lifestyle</option>
                             </Form.Control>
                         </Form.Group>
+                        <Form.Group controlId="formLanguages">
+                            <Form.Label>Languages</Form.Label>
+                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What languages do you speak?<br />Please select all that apply. <OverlayTrigger placement="right" delay={{ show: 50, hide: 150 }} overlay={renderTooltip}><strong>Help?</strong></OverlayTrigger></Form.Text>
+                            <Form.Control required as="select" multiple value={languages} onChange={event => {
+                                const options = event.target.options;
+                                let value = [];
+                                for (let i = 0, l = options.length; i < l; i++) {
+                                    if (options[i].selected) {
+                                        value.push(options[i].value);
+                                    }
+                                }
+                                setLanguages(value);
+                            }}>
+                                <option value="English">English</option>
+                                <option value="French">French</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Bengali">Bengali</option>
+                                <option value="Portuguese">Portuguese</option>
+                                <option value="Russian">Russian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Afrikaans">Afrikaans</option>
+                                <option value="Albanian">Albanian</option>
+                                <option value="Arabic">Arabic</option>
+                                <option value="Armenian">Armenian</option>
+                                <option value="Basque">Basque</option>
+                                <option value="Bulgarian">Bulgarian</option>
+                                <option value="Catalan">Catalan</option>
+                                <option value="Cambodian">Cambodian</option>
+                                <option value="Croatian">Croatian</option>
+                                <option value="Czech">Czech</option>
+                                <option value="Danish">Danish</option>
+                                <option value="Dutch">Dutch</option>
+                                <option value="Estonian">Estonian</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finnish">Finnish</option>
+                                <option value="Georgian">Georgian</option>
+                                <option value="German">German</option>
+                                <option value="Greek">Greek</option>
+                                <option value="Gujarati">Gujarati</option>
+                                <option value="Hebrew">Hebrew</option>
+                                <option value="Hungarian">Hungarian</option>
+                                <option value="Icelandic">Icelandic</option>
+                                <option value="Indonesian">Indonesian</option>
+                                <option value="Irish">Irish</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Javanese">Javanese</option>
+                                <option value="Korean">Korean</option>
+                                <option value="Latin">Latin</option>
+                                <option value="Latvian">Latvian</option>
+                                <option value="Lithuanian">Lithuanian</option>
+                                <option value="Macedonian">Macedonian</option>
+                                <option value="Malay">Malay</option>
+                                <option value="Malayalam">Malayalam</option>
+                                <option value="Maltese">Maltese</option>
+                                <option value="Maori">Maori</option>
+                                <option value="Marathi">Marathi</option>
+                                <option value="Mongolian">Mongolian</option>
+                                <option value="Nepali">Nepali</option>
+                                <option value="Norwegian">Norwegian</option>
+                                <option value="Persian">Persian</option>
+                                <option value="Polish">Polish</option>
+                                <option value="Punjabi">Punjabi</option>
+                                <option value="Quechua">Quechua</option>
+                                <option value="Romanian">Romanian</option>
+                                <option value="Samoan">Samoan</option>
+                                <option value="Serbian">Serbian</option>
+                                <option value="Slovak">Slovak</option>
+                                <option value="Slovenian">Slovenian</option>
+                                <option value="Swahili">Swahili</option>
+                                <option value="Swedish ">Swedish </option>
+                                <option value="Tamil">Tamil</option>
+                                <option value="Tatar">Tatar</option>
+                                <option value="Telugu">Telugu</option>
+                                <option value="Thai">Thai</option>
+                                <option value="Tibetan">Tibetan</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Turkish">Turkish</option>
+                                <option value="Ukrainian">Ukrainian</option>
+                                <option value="Urdu">Urdu</option>
+                                <option value="Uzbek">Uzbek</option>
+                                <option value="Vietnamese">Vietnamese</option>
+                                <option value="Welsh">Welsh</option>
+                                <option value="Xhosa">Xhosa</option>
+                            </Form.Control>
+                        </Form.Group>
                         <Form.Group controlId="formSkills">
                             <Form.Label>Skills</Form.Label>
                             <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What opportunities are you most suited for?<br />Please select all that apply. <OverlayTrigger placement="right" delay={{ show: 50, hide: 150 }} overlay={renderTooltip}><strong>Help?</strong></OverlayTrigger></Form.Text>
@@ -395,7 +487,11 @@ function Setup() {
                             <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>Please enter a short bio. (max 150 characters)</Form.Text>
                             <Form.Control required as="textarea" rows="3" value={bio} maxLength={150} onChange={event => setBio(event.target.value)} />
                         </Form.Group>
-                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} type="submit" disabled={cohort === 'Select' || country === "Select" || city === "" || skills === [] || hobbies === [] || name === "" || bio === ""}>
+                        <Form.Group controlId="formHeard">
+                            <Form.Label>How did you hear about us?</Form.Label>
+                            <Form.Control required type="text" placeholder="How did you hear about us?" value={heard} maxLength={100} onChange={event => setHeard(event.target.value)} />
+                        </Form.Group>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} type="submit" disabled={cohort === 'Select' || country === "Select" || city === "" || skills === [] || hobbies === [] || name === "" || bio === "" || heard === ""}>
                             Submit
                         </Button>
                     </Form>

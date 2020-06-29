@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import { UserContext } from './Providers/UserProvider';
-import app, { login, auth } from './Firebase';
+import app, { login, auth, db } from './Firebase';
 import EmailModal from './EmailModal';
 
 function Login() {
@@ -59,7 +59,9 @@ function Login() {
             return user;
         }).then(user => {
             if (user.user.emailVerified) {
-                window.location.replace("/dashboard");
+                db.collection("users").doc(`${user.user.uid}`).update({
+                    lastLoggedIn: new Date(Date.now())
+                }).then(() => window.location.replace("/dashboard")).catch(error => setError(error));
             }
         }).catch(error => {
             if (error.message !== 'Email has not been verified.') {

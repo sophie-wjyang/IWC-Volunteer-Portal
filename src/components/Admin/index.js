@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import app, { db } from '../Firebase';
 import { Redirect } from 'react-router-dom';
 import Loading from '../Loading';
-import { Button, Alert, /*Form, Card, Badge*/ } from 'react-bootstrap';
+import { Button, Alert, Tabs, Tab /*Form, Card, Badge*/ } from 'react-bootstrap';
 import NewModal from './NewModal';
 import AdminCard from './AdminCard';
+import UserCard from './UserCard';
+import Submissions from './Submissions';
+import Requests from './Requests';
+import Responses from './Responses'
 import './styles.css';
 
 function Admin() {
@@ -17,6 +21,7 @@ function Admin() {
     //const [opportunityIds, setOpportunityIds] = useState([]);
     const [newOpportunity, setNewOpportunity] = useState(false);
     const [allDocs, setAllDocs] = useState([]);
+    const [userList, setUserList] = useState([]);
 
     //const [editOpportunity, setEditOpportunity] = useState(null);
 
@@ -37,7 +42,7 @@ function Admin() {
                 })
             }
 
-            db.collection("opportunities").orderBy('added', 'desc').get().then(querySnapshot => {
+            db.collection("opportunities").orderBy('available', 'desc').orderBy('added', 'desc').get().then(querySnapshot => {
                 //let opps = [];
                 //let oppIds = [];
                 let docs = [];
@@ -93,6 +98,18 @@ function Admin() {
                 setOpportunities(bigArray);*/
             }).catch(error => setError(error));
 
+            db.collection("users").orderBy("name").get().then(querySnapshot => {
+                let users = [];
+                querySnapshot.forEach(userData => {
+                    //opps.push(doc.data());
+                    //oppIds.push(doc.id);
+                    //if (userData.id !== user.uid) {
+                        users.push(userData);
+                    //}
+                });
+                setUserList(users);
+            })
+
             setPending(false);
         })
     }, []);
@@ -116,26 +133,28 @@ function Admin() {
     return (
         <>
             {(admin !== null && admin) ? (<>
-                <div className="admin-container">
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: "30px" }}>
-                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => setNewOpportunity(true)}>Add Opportunity</Button>
-                        <NewModal show={newOpportunity} onHide={() => {setNewOpportunity(false); window.location.reload()}} />
-                    </div>
-                    <div className="admin-opportunities">
-                        <h1 style={{ alignSelf: "flex-start", margin: "20px" }}>All Opportunities</h1>
-                        {/*<div className="admin-sort">
+                <Tabs defaultActiveKey="opportunities" id="uncontrolled-tab-example">
+                    <Tab eventKey="opportunities" title="Opportunities">
+                        <div className="admin-container">
+                            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', margin: "30px" }}>
+                                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => setNewOpportunity(true)}>Add Opportunity</Button>
+                                <NewModal show={newOpportunity} onHide={() => { setNewOpportunity(false); window.location.reload() }} />
+                            </div>
+                            <div className="admin-opportunities">
+                                <h1 style={{ alignSelf: "flex-start", margin: "20px" }}>All Opportunities</h1>
+                                {/*<div className="admin-sort">
                             <Form inline>
 
                             </Form>
                         </div>*/}
 
-                        {/*<AdminCards docs={allDocs} />*/}
+                                {/*<AdminCards docs={allDocs} />*/}
 
-                        {allDocs.map(group => <div className="admin-opportunities-row">
-                            {group.map(opportunity => <AdminCard opportunity={opportunity} />)}
-                        </div>)}
+                                {allDocs.map(group => <div className="admin-opportunities-row">
+                                    {group.map(opportunity => <AdminCard opportunity={opportunity} />)}
+                                </div>)}
 
-                        {/*allDocs.map(group => <div className="admin-opportunities-row">
+                                {/*allDocs.map(group => <div className="admin-opportunities-row">
                             {group.map(opportunity => <Card className="opportunity-card">
                                 <Card.Body>
                                     <Card.Title><h4>{opportunity.data().name}</h4></Card.Title>
@@ -163,7 +182,7 @@ function Admin() {
                             </Card>)}
                         </div>)*/}
 
-                        {/*opportunities.map(group => <div className="admin-opportunities-row">
+                                {/*opportunities.map(group => <div className="admin-opportunities-row">
                             {group.map(opportunity => <Card className="opportunity-card">
                                 <Card.Body>
                                     <Card.Title><h4>{opportunity.name}</h4></Card.Title>
@@ -180,9 +199,46 @@ function Admin() {
                                 {<EditModal show={editOpportunity} onHide={() => setNewOpportunity(false)} opportunity={opportunity} />}
                             </Card>)}
                         </div>)*/}
-                    </div>
-                    <Alert variant="danger" show={error}>{error ? error.message : ""}</Alert>
-                </div>
+                            </div>
+                            <Alert variant="danger" show={error}>{error ? error.message : ""}</Alert>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="users" title="Users">
+                        <div className="admin-container">
+                            <div className="admin-opportunities">
+                                <h1 style={{ alignSelf: "flex-start", margin: "20px" }}>Manage Users</h1>
+                                <div style={{ width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", alignItems: "stretch" }}>
+                                    {userList.map(listUser => <UserCard user={listUser} />)}
+                                </div>
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="submissions" title="Submissions">
+                        <div className="admin-container">
+                            <div className="other-container-thing">
+                                <h1>Manage Submissions</h1>
+                                <Submissions />
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="requests" title="Requests">
+                        <div className="admin-container">
+                            <div className="other-container-thing">
+                                <h1>Manage Requests</h1>
+                                <Requests />
+                            </div>
+                        </div>
+                    </Tab>
+                    <Tab eventKey="data" title="Data">
+                        <div className="admin-container">
+                            <div className="other-container-thing">
+                                <h1>Responses for "How did you hear about IWC?"</h1>
+                                <Responses />
+                            </div>
+                        </div>
+                    </Tab>
+                </Tabs>
+
             </>) : (<>
                 <Redirect to="/dashboard" />
             </>)}

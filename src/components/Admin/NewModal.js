@@ -26,7 +26,9 @@ function NewModal(props) {
             skills: skills,
             description: convertToRaw(editorState.getCurrentContent()),
             added: new Date(Date.now()),
-            updated: new Date(Date.now())
+            updated: new Date(Date.now()),
+            reviews: [],
+            available: true,
         }).then(() => {
             clear();
             setSuccess("The opportunity was successfully saved.")

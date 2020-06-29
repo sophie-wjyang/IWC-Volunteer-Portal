@@ -37,7 +37,9 @@ function Signup() {
         app.auth().createUserWithEmailAndPassword(email, password1).then(user => {
             return app.firestore().collection("users").doc(`${user.user.uid}`).set({
                 admin: false,
-                quizCompleted: false
+                quizCompleted: false,
+                dateCreated: new Date(Date.now()),
+                name: "",
             })
         }).then(() => {
             setSentVerification(true); 

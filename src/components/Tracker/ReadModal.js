@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, Badge, Button } from 'react-bootstrap';
+import { Modal, Badge } from 'react-bootstrap';
 import ReadText from '../Editor/ReadText';
 import { EditorState, convertFromRaw, } from 'draft-js';
-import SubmitModal from './SubmitModal';
 
 function ReadModal(props) {
 
@@ -11,6 +10,7 @@ function ReadModal(props) {
     const partnership = props.opportunity.data().partnership;
     const cohort = props.opportunity.data().cohort;
     const skills = props.opportunity.data().skills;
+    const available = props.opportunity.data().available;
 
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
@@ -18,7 +18,6 @@ function ReadModal(props) {
     const updated = props.opportunity.data().updated.toDate().toLocaleDateString(undefined, options);
     const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.data().description)));
 
-    const [submitModal, setSubmitModal] = useState(false);
 
     /*useEffect(() => {
         db.collection("opportunities").doc(`${props.id}`).get().then(doc => {
@@ -39,10 +38,10 @@ function ReadModal(props) {
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title>{opportunity}</Modal.Title>
+                <Modal.Title>{opportunity} {available ? "" : "(Opportunity is no longer available)" }</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <h5>{organization} {partnership ? (<Badge style={{ backgroundColor: "#55BCC9" }} variant="info">IWC Partnership</Badge>) : (<Badge style={{ backgroundColor: "#55BCC9" }} variant="info">Opportunity</Badge>)} {props.submitted ? (<Badge variant="secondary">Submitted</Badge>) : (<></>)}</h5>
+                <h5>{organization} {partnership ? (<Badge style={{ backgroundColor: "#55BCC9" }} variant="info">IWC Partnership</Badge>) : (<Badge style={{ backgroundColor: "#55BCC9" }} variant="info">Opportunity</Badge>)}</h5>
                 <h6>Cohort: {cohort}</h6>
                 <h6>Skills: </h6>
                 <ul>
@@ -50,15 +49,11 @@ function ReadModal(props) {
                 </ul>
                 <h6>Description: </h6>
                 <ReadText editorState={editorState} setEditorState={setEditorState} />
-                <br />
-                <p>Want to submit your work for this opportunity?</p>
-                <Button onClick={() => setSubmitModal(true)}>{props.submitted ? "Re-submit Opportunity" : "Submit Opportunity"}</Button>
             </Modal.Body>
             <Modal.Footer>
                 <small style={{ marginRight: "auto" }}>Posted on {added}</small>
                 <small>Last updated on {updated}</small>
             </Modal.Footer>
-            <SubmitModal show={submitModal} onHide={() => { setSubmitModal(false); window.location.reload() }} user={props.user} opportunity={props.opportunity} />
         </Modal>
     )
 }

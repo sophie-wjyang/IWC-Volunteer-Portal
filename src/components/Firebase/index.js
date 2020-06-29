@@ -1,4 +1,5 @@
 import app from "firebase/app";
+import * as firebasee from "firebase";
 import 'firebase/auth';
 import 'firebase/firestore';
 
@@ -17,6 +18,7 @@ app.initializeApp(config);
 
 export const auth = app.auth();
 export const db = app.firestore();
+export const firebase = firebasee;
 
 export let user = auth.currentUser;
 
@@ -46,6 +48,10 @@ export const passwordReset = (email) => {
 
 export const passwordUpdate = (password) => {
   return auth.currentUser.updatePassword(password);
+}
+
+export const getRecommendations = () => {
+
 }
 
 export default app;

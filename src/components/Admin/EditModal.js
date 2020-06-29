@@ -12,6 +12,7 @@ function EditModal(props) {
     const [cohort, setCohort] = useState(props.opportunity.cohort);
     const [skills, setSkills] = useState(props.opportunity.skills);
     const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.description)));
+    const available = props.opportunity.available;
 
     const id = props.id;
 
@@ -19,6 +20,9 @@ function EditModal(props) {
     const [success, setSuccess] = useState(false);
     const [deleted, setDeleted] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [permanentlyDeleted, setPermanentlyDeleted] = useState(false);
+    const [restored, setRestored] = useState(false);
+    const [permanentlyDeleteModal, setPermanentlyDeleteModal] = useState(false);
 
     /*useEffect(() => {
         db.collection("opportunities").doc(`${props.id}`).get().then(doc => {
@@ -50,7 +54,9 @@ function EditModal(props) {
     }
 
     const deleteOpportunity = () => {
-        db.collection("opportunities").doc(`${id}`).delete().then(() => {
+        db.collection("opportunities").doc(`${id}`).update({
+            available: false
+        }).then(() => {
             setSuccess("The opportunity was successfully deleted.")
             setDeleted(true);
             setDeleteModal(false);
@@ -135,7 +141,23 @@ function EditModal(props) {
             <Modal.Footer>
                 <Alert variant="danger" show={error}>{error ? `${error.message}` : ""}</Alert>
                 <Alert variant="success" show={success}>{success}</Alert>
-                <Button variant="primary" onClick={() => setDeleteModal(true)} disabled={deleted}>Delete</Button>
+                {available ? (<>
+                    <Button variant="primary" onClick={() => setDeleteModal(true)} disabled={deleted}>Delete</Button>
+                    <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === [] || deleted} onClick={save}>Save</Button>
+                </>) : (<>
+                    <Button variant="primary" disabled={restored || permanentlyDeleted} onClick={() => {
+                            setPermanentlyDeleteModal(true);
+                    }}>Permanently Delete</Button>
+                    <Button variant="success" disabled={restored || permanentlyDeleted} onClick={() => {
+                        db.collection("opportunities").doc(`${id}`).update({
+                            available: true
+                        }).then(() => {
+                            setSuccess("The opportunity was successfully restored.")
+                            setDeleted(false);
+                            setRestored(true);
+                        }).catch(error => setError(error));
+                    }}>Restore Opportunity</Button>  
+                </>)}  
                 <Modal show={deleteModal} onHide={() => setDeleteModal(false)} size="sm" aria-labelledby="modal-new-opportunities" centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Are you sure you want to delete this opportunity?</Modal.Title>
@@ -144,7 +166,21 @@ function EditModal(props) {
                         <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {deleteOpportunity();}}>Yes I'm sure</Button>
                     </Modal.Body>
                 </Modal>
-                <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === [] || deleted} onClick={save}>Save</Button>
+                <Modal show={permanentlyDeleteModal} onHide={() => setPermanentlyDeleteModal(false)} size="sm" aria-labelledby="modal-new-opportunities" centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Are you sure you want to permanently delete this opportunity?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Warning: This may result in unexpected errors, users may not be able to see some of their previously completed opportunities.</p>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {
+                            db.collection("opportunities").doc(`${id}`).delete().then(() => {
+                                setSuccess("The opportunity was successfully deleted.")
+                                setPermanentlyDeleted(true);
+                                setPermanentlyDeleteModal(false);
+                            }).catch(error => setError(error));
+                        }}>Yes I'm sure</Button>
+                    </Modal.Body>
+                </Modal>
             </Modal.Footer>
         </Modal>
     )

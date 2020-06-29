@@ -19,7 +19,7 @@ function PasswordModal(props) {
     return (
         <Modal
             {...props}
-            size="lg"
+            size="md"
             aria-labelledby="modal-new-opportunities"
             centered
         >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Button } from 'react-bootstrap';
 import Logo from '../assets/iwc-logo';
 import app, { db } from './Firebase';
 
@@ -38,17 +38,37 @@ function Header() {
                 <Navbar.Collapse id="navbar-nav">
                     <Nav className="ml-auto">
                         {admin ? (<>
-                            <Nav.Link href="/admin">Admin</Nav.Link>
-                            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-                            <Nav.Link href="/opportunities">Opportunities</Nav.Link>
-                            <Nav.Link href="/signout">Sign Out</Nav.Link>
+                            <Nav.Item>
+                                <Nav.Link href="/admin">Admin</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/opportunities">Opportunities</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/tracker">Tracker</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/signout">Sign Out</Nav.Link>
+                            </Nav.Item>
                         </>) : (<>{user ? (<>
-                            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-                            <Nav.Link href="/opportunities">Opportunities</Nav.Link>
-                            <Nav.Link href="/signout">Sign Out</Nav.Link>
+                            <Nav.Item>
+                                <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/opportunities">Opportunities</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/tracker">Tracker</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/signout">Sign Out</Nav.Link>
+                            </Nav.Item>
                         </>) : (<>
-                            <Nav.Link href="/signup">Sign Up</Nav.Link>
-                            <Nav.Link href="/login">Log In</Nav.Link>
+                            <Button variant="primary" style={{ backgroundColor: "#55BCC9", border: "#FC4445", margin: "10px" }} onClick={() => window.location.replace("/signup")}>Sign Up</Button>
+                            <Button variant="primary" style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} onClick={() => window.location.replace("/login")}>Log In</Button>
                         </>)}</>)}
                         {}
                     </Nav>
