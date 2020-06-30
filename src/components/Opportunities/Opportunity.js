@@ -22,6 +22,8 @@ function Opportunity(props) {
             <Card.Footer>
                 <Card.Text>
                     <small>Last updated on {opportunity.data().updated.toDate().toLocaleDateString(undefined, options)}</small>
+                    <br />
+                    <small>Added on {opportunity.data().added.toDate().toLocaleDateString(undefined, options)}</small>
                 </Card.Text>
                 <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => { setShowModal(true) }}>More Info</Button>
             </Card.Footer>

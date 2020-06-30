@@ -17,7 +17,7 @@
 }
 
 .opportunities-card-container {
-    width: 100%;
+    width: 95%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -27,8 +27,11 @@
 
 .opportunities-opportunity-card {
     width: 23%;
-    margin-right: auto;
-    margin-top: 16px;
+    margin: 10px;
+}
+
+.oppsort-section {
+    margin: 5px;
 }
 
 @media (max-width: 768px) {

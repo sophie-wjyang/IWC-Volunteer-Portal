@@ -12,6 +12,7 @@ function ReadModal(props) {
     const cohort = props.opportunity.cohort;
     const skills = props.opportunity.skills;
     const reviews = props.opportunity.reviews;
+    const form = props.opportunity.form;
 
     //const [submissions, setSubmissions] = useState([]);
 
@@ -66,6 +67,7 @@ function ReadModal(props) {
                         });
                     })}
                 </ul> : <p>No submissions made.</p>}*/}
+                <p>Link to submission: <a href={form} target="_blank" rel="noopener noreferrer">{form}</a></p>
                 <h6>Reviews: </h6>
                 {(reviews && reviews.length > 0) ? <ul>
                     {reviews.map(review => <li>

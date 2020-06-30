@@ -9,6 +9,8 @@ function SubmitModal(props) {
     const [feedback, setFeedback] = useState("");
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
+    const [formComplete, setFormComplete] = useState(false);
+    const form = props.opportunity.data().form;
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -46,18 +48,27 @@ function SubmitModal(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group>
-                        <Form.Text>Please submit a link to your work for the opportunity (e.g. Google Drive).</Form.Text>
-                        <Form.Control required={!checked} disabled={checked} type="url" value={submission} onChange={event => setSubmission(event.target.value)} placeholder="Submission Link"></Form.Control>
-                    </Form.Group>
-                    <Form.Check type="checkbox" label="I've submitted my opportunity through another means" checked={checked} onChange={() => setChecked(!checked)} />
+                    {(!form || form === "") ? <>
+                        <Form.Group>
+                            <Form.Text>Please submit a link to your work for the opportunity (e.g. Google Drive).</Form.Text>
+                            <Form.Control required={!checked} disabled={checked} type="url" value={submission} onChange={event => setSubmission(event.target.value)} placeholder="Submission Link"></Form.Control>
+                        </Form.Group>
+                        <Form.Check type="checkbox" label="I've submitted my opportunity through another means" checked={checked} onChange={() => setChecked(!checked)} />
+                    </> : <>
+                            <p>Please complete this form for your submission: <a href={form} target="_blank" rel="noopener noreferrer" onClick={() => {setFormComplete(true)}}>{form}</a></p>
+                        </>}
                     <Form.Group>
                         <Form.Text>Please give us some short feedback (only 2 to 3 sentences) on your experience completing this opportunity. This is anonymous so feel free to be completely honest with us.</Form.Text>
                         <Form.Control required as="textarea" rows="3" value={feedback} maxLength={300} onChange={event => setFeedback(event.target.value)} placeholder="Feedback"></Form.Control>
                     </Form.Group>
-                    <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || (submission === "" && !checked) || success}>
+
+                    {(!form || form === "") ? <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || (submission === "" && !checked) || success}>
                         Submit
-                    </Button>
+                    </Button> : <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || !formComplete || success}>
+                        Submit
+                    </Button> }
+
+                    
                 </Form>
             </Modal.Body>
             <Alert variant="danger" show={error}>{error ? `${error.message}` : ""}</Alert>

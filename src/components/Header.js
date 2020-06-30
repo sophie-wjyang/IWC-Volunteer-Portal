@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Nav, Button } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import Logo from '../assets/iwc-logo';
 import app, { db } from './Firebase';
 
@@ -67,8 +67,12 @@ function Header() {
                                 <Nav.Link href="/signout">Sign Out</Nav.Link>
                             </Nav.Item>
                         </>) : (<>
-                            <Button variant="primary" style={{ backgroundColor: "#55BCC9", border: "#FC4445", margin: "10px" }} onClick={() => window.location.replace("/signup")}>Sign Up</Button>
-                            <Button variant="primary" style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} onClick={() => window.location.replace("/login")}>Log In</Button>
+                            <Nav.Item>
+                                <Nav.Link href="/signup">Sign Up</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/login">Log In</Nav.Link>
+                            </Nav.Item>
                         </>)}</>)}
                         {}
                     </Nav>

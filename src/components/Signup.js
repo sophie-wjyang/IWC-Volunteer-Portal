@@ -38,6 +38,7 @@ function Signup() {
             return app.firestore().collection("users").doc(`${user.user.uid}`).set({
                 admin: false,
                 quizCompleted: false,
+                email: email,
                 dateCreated: new Date(Date.now()),
                 name: "",
             })

@@ -12,6 +12,7 @@ function EditModal(props) {
     const [cohort, setCohort] = useState(props.opportunity.cohort);
     const [skills, setSkills] = useState(props.opportunity.skills);
     const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.description)));
+    const [form, setForm] = useState(props.opportunity.form);
     const available = props.opportunity.available;
 
     const id = props.id;
@@ -44,6 +45,7 @@ function EditModal(props) {
             cohort: `${cohort}`,
             skills: skills,
             description: convertToRaw(editorState.getCurrentContent()),
+            form: form,
             updated: new Date(Date.now())
         }).then(() => {
             setSuccess("The opportunity was successfully saved.")
@@ -132,7 +134,10 @@ function EditModal(props) {
                         <Form.Label>Opportunity Description</Form.Label>
                         <EditText editorState={editorState} setEditorState={setEditorState} />
                     </Form.Group>
-
+                    <Form.Group>
+                        <Form.Label>Submission Form</Form.Label>
+                        <Form.Control type="url" placeholder="Link to form for opportunity submissions. Leave blank if not applicable." value={form} onChange={event => setForm(event.target.value)} />
+                    </Form.Group>
                 </Form>
 
 

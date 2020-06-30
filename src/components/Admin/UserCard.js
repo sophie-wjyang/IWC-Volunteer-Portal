@@ -18,7 +18,7 @@ function UserCard(props) {
                 <p>{user.data().email}</p>
                 {user.data().admin ? <Badge style={{ backgroundColor: "#55BCC9" }} variant="info">Admin</Badge> : <></>}
                 <h6>{user.data().cohort}</h6>
-                <small>User created on {user.data().dateCreated.toDate().toLocaleDateString(undefined, options)}</small>
+                <small>User created on {user.data().dateCreated && user.data().dateCreated.toDate().toLocaleDateString(undefined, options)}</small>
                 <br />
                 {user.data().lastLoggedIn ? <small>User last logged in on {user.data().lastLoggedIn.toDate().toLocaleDateString(undefined, options)}</small> : <></>}
                 <br />

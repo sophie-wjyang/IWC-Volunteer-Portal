@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Card, Form, OverlayTrigger, Button, Tooltip } from 'react-bootstrap';
 import app, { db } from './Firebase'
 import Loading from './Loading';
-import DeleteModal from './DeleteModal';
+//import DeleteModal from './DeleteModal';
 import './styles.css';
 
 function Edit() {
@@ -20,7 +20,7 @@ function Edit() {
     const [hobbies, setHobbies] = useState(null);
     const [bio, setBio] = useState("");
 
-    const [showDelete, setShowDelete] = useState(false);
+    //const [showDelete, setShowDelete] = useState(false);
 
     const [error, setError] = useState(null);
     const [complete, setComplete] = useState(false);
@@ -500,13 +500,13 @@ function Edit() {
                         <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={cohort === 'Select' || country === "Select" || city === "" || skills === [] || hobbies === [] || name === "" || bio === ""}>
                             Submit
                         </Button>
-                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} onClick={() => setShowDelete(true)}>
+                        {/*<Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} onClick={() => setShowDelete(true)}>
                             Delete Account
-                        </Button>
+                        </Button>*/}
                         <Button variant="secondary" style={{ margin: "10px" }} onClick={() => window.location.replace("/dashboard")}>
                             Cancel
                         </Button>
-                        <DeleteModal show={showDelete} onHide={() => {setShowDelete(false)}} />
+                        {/*<DeleteModal show={showDelete} onHide={() => {setShowDelete(false)}} />*/}
                     </Form>
                 </Card.Body>
             </Card>

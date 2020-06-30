@@ -45,8 +45,9 @@ function Setup() {
     const handleSubmit = (event) => {
         event.preventDefault();
         setError(null);
-        db.collection("users").doc(`${user.uid}`).set({
+        db.collection("users").doc(`${user.uid}`).update({
             name: `${name}`,
+            email: user.email,
             age: age,
             city: `${city}`,
             country: `${country}`,

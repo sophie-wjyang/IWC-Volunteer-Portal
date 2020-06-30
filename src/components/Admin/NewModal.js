@@ -12,6 +12,7 @@ function NewModal(props) {
     const [cohort, setCohort] = useState("Select");
     const [skills, setSkills] = useState([]);
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
+    const [form, setForm] = useState("");
 
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -25,6 +26,7 @@ function NewModal(props) {
             cohort: `${cohort}`,
             skills: skills,
             description: convertToRaw(editorState.getCurrentContent()),
+            form: form,
             added: new Date(Date.now()),
             updated: new Date(Date.now()),
             reviews: [],
@@ -117,7 +119,10 @@ function NewModal(props) {
                         <Form.Label>Opportunity Description</Form.Label>
                         <EditText editorState={editorState} setEditorState={setEditorState} />
                     </Form.Group>
-
+                    <Form.Group>
+                        <Form.Label>Submission Form</Form.Label>
+                        <Form.Control type="url" placeholder="Link to form for opportunity submissions. Leave blank if not applicable." value={form} onChange={event => setForm(event.target.value)} />
+                    </Form.Group>
                 </Form>
 
 
