@@ -49,7 +49,7 @@ function Tracker() {
             
                 <div className="admin-opportunities">
                 <h1 style={{ alignSelf: "flex-start", margin: "20px 0 20px 0" }}>Opportunity Tracker</h1>
-                <p style={{ alignSelf: "flex-start", margin: "20px 0 20px 0" }}>The opportunities that you've submitted for will show up on this page. You may indicate the number of hours that you have spent on a submission and send a request to the IWC team, the request will then be reviewed by an IWC admin. Once the request is approved, you will be contacted by the team with further instructions.</p>
+                <p style={{ alignSelf: "flex-start", margin: "20px 0 20px 0" }}>The opportunities that you've submitted for will show up on this page. You may indicate the number of hours that you have spent on a submission and send a request to the IWC team, the request will then be reviewed by an IWC admin. Once the request is approved, please send us an email at impactwithoutcontact@gmail.com with a screenshot of the "Tracker" page.</p>
                     
                     {empty ? <div><p>You have not submitted for any opportunities yet.</p></div> : <div style={{ width: "100%"}}>{submissions && submissions.map(submission => <Track submission={submission} />)}</div>}
                     
