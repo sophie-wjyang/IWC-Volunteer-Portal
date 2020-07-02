@@ -232,7 +232,6 @@ function Admin() {
                     <Tab eventKey="data" title="Data">
                         <div className="admin-container">
                             <div className="other-container-thing">
-                                <h1>Responses for "How did you hear about IWC?"</h1>
                                 <Responses />
                             </div>
                         </div>

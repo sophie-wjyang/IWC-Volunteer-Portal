@@ -10,7 +10,7 @@ function EditModal(props) {
     const [organization, setOrganization] = useState(props.opportunity.organization);
     const [partnership, setPartnership] = useState(props.opportunity.partnership);
     const [cohort, setCohort] = useState(props.opportunity.cohort);
-    const [skills, setSkills] = useState(props.opportunity.skills);
+    const [skills, setSkills] = useState();
     const [editorState, setEditorState] = useState(EditorState.createWithContent(convertFromRaw(props.opportunity.description)));
     const [form, setForm] = useState(props.opportunity.form);
     const available = props.opportunity.available;
@@ -37,22 +37,38 @@ function EditModal(props) {
     }, [props])*/
 
     const save = () => {
-
-        db.collection("opportunities").doc(`${id}`).update({
-            name: `${opportunity}`,
-            organization: `${organization}`,
-            partnership: partnership,
-            cohort: `${cohort}`,
-            skills: skills,
-            description: convertToRaw(editorState.getCurrentContent()),
-            form: form,
-            updated: new Date(Date.now())
-        }).then(() => {
-            setSuccess("The opportunity was successfully saved.")
-            window.location.reload();
-        }).catch(error => {
-            setError(error);
-        });
+        if (skills && skills.length > 0) {
+            db.collection("opportunities").doc(`${id}`).update({
+                name: `${opportunity}`,
+                organization: `${organization}`,
+                partnership: partnership,
+                cohort: `${cohort}`,
+                skills: skills,
+                description: convertToRaw(editorState.getCurrentContent()),
+                form: form ? form : "",
+                updated: new Date(Date.now())
+            }).then(() => {
+                setSuccess("The opportunity was successfully saved.")
+                window.location.reload();
+            }).catch(error => {
+                setError(error);
+            });
+        } else {
+            db.collection("opportunities").doc(`${id}`).update({
+                name: `${opportunity}`,
+                organization: `${organization}`,
+                partnership: partnership,
+                cohort: `${cohort}`,
+                description: convertToRaw(editorState.getCurrentContent()),
+                form: form ? form : "",
+                updated: new Date(Date.now())
+            }).then(() => {
+                setSuccess("The opportunity was successfully saved.")
+                window.location.reload();
+            }).catch(error => {
+                setError(error);
+            });
+        }
     }
 
     const deleteOpportunity = () => {
@@ -151,7 +167,7 @@ function EditModal(props) {
                     <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} disabled={opportunity === '' || organization === '' || cohort === 'Select' || skills === [] || deleted} onClick={save}>Save</Button>
                 </>) : (<>
                     <Button variant="primary" disabled={restored || permanentlyDeleted} onClick={() => {
-                            setPermanentlyDeleteModal(true);
+                        setPermanentlyDeleteModal(true);
                     }}>Permanently Delete</Button>
                     <Button variant="success" disabled={restored || permanentlyDeleted} onClick={() => {
                         db.collection("opportunities").doc(`${id}`).update({
@@ -161,14 +177,14 @@ function EditModal(props) {
                             setDeleted(false);
                             setRestored(true);
                         }).catch(error => setError(error));
-                    }}>Restore Opportunity</Button>  
-                </>)}  
+                    }}>Restore Opportunity</Button>
+                </>)}
                 <Modal show={deleteModal} onHide={() => setDeleteModal(false)} size="sm" aria-labelledby="modal-new-opportunities" centered>
                     <Modal.Header closeButton>
                         <Modal.Title>Are you sure you want to delete this opportunity?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => {deleteOpportunity();}}>Yes I'm sure</Button>
+                        <Button style={{ backgroundColor: "#FC4445", border: "#FC4445" }} onClick={() => { deleteOpportunity(); }}>Yes I'm sure</Button>
                     </Modal.Body>
                 </Modal>
                 <Modal show={permanentlyDeleteModal} onHide={() => setPermanentlyDeleteModal(false)} size="sm" aria-labelledby="modal-new-opportunities" centered>

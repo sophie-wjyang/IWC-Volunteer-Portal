@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import app, { db } from './Firebase';
 import Loading from './Loading';
-import { Card, Alert, Button, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Card, Alert, Button, Form } from 'react-bootstrap';
 
 function Setup() {
 
@@ -65,13 +65,13 @@ function Setup() {
         }).catch(error => setError(error));
     }
 
-    function renderTooltip(props) {
+    /*function renderTooltip(props) {
         return (
             <Tooltip id="multiselect-tooltip" {...props}>
                 CTRL/CMD + Click to select multiple.
             </Tooltip>
         );
-    }
+    }*/
 
     return (
         <div style={{ width: "100%", paddingTop: "20px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
@@ -353,7 +353,7 @@ function Setup() {
                         </Form.Group>
                         <Form.Group controlId="formLanguages">
                             <Form.Label>Languages</Form.Label>
-                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What languages do you speak?<br />Please select all that apply. <OverlayTrigger placement="right" delay={{ show: 50, hide: 150 }} overlay={renderTooltip}><strong>Help?</strong></OverlayTrigger></Form.Text>
+                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What languages do you speak?<br />Please select all that apply. CTRL/CMD + Click to select multiple.</Form.Text>
                             <Form.Control required as="select" multiple value={languages} onChange={event => {
                                 const options = event.target.options;
                                 let value = [];
@@ -440,7 +440,7 @@ function Setup() {
                         </Form.Group>
                         <Form.Group controlId="formSkills">
                             <Form.Label>Skills</Form.Label>
-                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What opportunities are you most suited for?<br />Please select all that apply. <OverlayTrigger placement="right" delay={{ show: 50, hide: 150 }} overlay={renderTooltip}><strong>Help?</strong></OverlayTrigger></Form.Text>
+                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>What opportunities are you most suited for?<br />Please select all that apply. CTRL/CMD + Click to select multiple.</Form.Text>
                             <Form.Control required as="select" multiple value={skills} onChange={event => {
                                 const options = event.target.options;
                                 let value = [];
@@ -462,7 +462,7 @@ function Setup() {
                         </Form.Group>
                         <Form.Group controlId="formHobbies">
                             <Form.Label>Hobbies</Form.Label>
-                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>If you were to write for our blog, what would you write about?<br />Please select all that apply.  <OverlayTrigger placement="right" delay={{ show: 50, hide: 150 }} overlay={renderTooltip}><strong>Help?</strong></OverlayTrigger></Form.Text>
+                            <Form.Text style={{ marginTop: "-6px", marginBottom: "10px" }} muted>If you were to write for our blog, what would you write about?<br />Please select all that apply.  CTRL/CMD + Click to select multiple.</Form.Text>
                             <Form.Control required as="select" multiple value={hobbies} onChange={event => {
                                 const options = event.target.options;
                                 let value = [];
