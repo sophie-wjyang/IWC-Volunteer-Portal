@@ -45,7 +45,7 @@ function Setup() {
     const handleSubmit = (event) => {
         event.preventDefault();
         setError(null);
-        db.collection("users").doc(`${user.uid}`).update({
+        db.collection("users").doc(`${user.uid}`).set({
             name: `${name}`,
             email: user.email,
             age: age,
@@ -60,7 +60,7 @@ function Setup() {
             quizCompleted: true,
             admin: admin,
             completed: [""]
-        }).then(() => {
+        }, { merge: true }).then(() => {
             window.location.replace("/dashboard");
         }).catch(error => setError(error));
     }
