@@ -10,6 +10,7 @@ function SubmitModal(props) {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
     const [formComplete, setFormComplete] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
     const form = props.opportunity.data().form;
 
     const handleSubmit = (event) => {
@@ -47,7 +48,10 @@ function SubmitModal(props) {
                 <Modal.Title>Submit Opportunity</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={event => {
+                    setSubmitted(true);
+                    handleSubmit(event);
+                }}>
                     {(!form || form === "") ? <>
                         <Form.Group>
                             <Form.Text>Please submit a link to your work for the opportunity (e.g. Google Drive).</Form.Text>
@@ -55,20 +59,18 @@ function SubmitModal(props) {
                         </Form.Group>
                         <Form.Check type="checkbox" label="I've submitted my opportunity through another means" checked={checked} onChange={() => setChecked(!checked)} />
                     </> : <>
-                            <p>Please complete this form for your submission: <a href={form} target="_blank" rel="noopener noreferrer" onClick={() => {setFormComplete(true)}}>{form}</a></p>
+                            <p>Please complete this form for your submission: <a href={form} target="_blank" rel="noopener noreferrer" onClick={() => { setFormComplete(true) }}>{form}</a></p>
                         </>}
                     <Form.Group>
                         <Form.Text>Please give us some short feedback (only 2 to 3 sentences) on your experience completing this opportunity. This is anonymous so feel free to be completely honest with us.</Form.Text>
                         <Form.Control required as="textarea" rows="3" value={feedback} maxLength={300} onChange={event => setFeedback(event.target.value)} placeholder="Feedback"></Form.Control>
                     </Form.Group>
 
-                    {(!form || form === "") ? <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || (submission === "" && !checked) || success}>
+                    {(!form || form === "") ? <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || (submission === "" && !checked) || success || submitted}>
                         Submit
-                    </Button> : <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || !formComplete || success}>
-                        Submit
-                    </Button> }
-
-                    
+                    </Button> : <Button style={{ backgroundColor: "#FC4445", border: "#FC4445", margin: "10px" }} type="submit" disabled={feedback === "" || !formComplete || success || submitted}>
+                            Submit
+                    </Button>}
                 </Form>
             </Modal.Body>
             <Alert variant="danger" show={error}>{error ? `${error.message}` : ""}</Alert>
