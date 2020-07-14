@@ -30,7 +30,7 @@ function Tracker() {
             }).then(data => {
                 if (data.completed.length > 0) {
                     setEmpty(false);
-                    db.collection("submissions").where("opportunityid", "in", data.completed).orderBy("timeSubmitted").get().then(querySnapshot => {
+                    db.collection("submissions").where("opportunityid", "in", data.completed).where("userid", "==", user.uid).orderBy("timeSubmitted").get().then(querySnapshot => {
                         let subs = [];
                         querySnapshot.forEach(sub => {
                             subs.push(sub);
