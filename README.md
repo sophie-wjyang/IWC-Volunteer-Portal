@@ -12,8 +12,6 @@ Volunteer portal with features including:
 
 
 
-Information:
-
 ## Available Scripts
 
 In the project directory, you can run:
