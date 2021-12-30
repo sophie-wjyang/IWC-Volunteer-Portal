@@ -1,4 +1,18 @@
-# IWC
+# IWC Volunteer Portal
+
+Volunteer portal with features including:
+
+-allows volunteers sign up and take a quiz about their skills, hobbies, and sector(s) they're interested in helping out in
+
+-volunteer dashboard with their profile and personalized recommendations for volunteering opportunities based on their data
+
+-opportunities tab to allow volunteers to browse through our database of active initiatives, both IWC-operated and from other community organizations
+
+-volunteer hours tracker tab
+
+
+
+Information:
 
 ## Available Scripts
 
