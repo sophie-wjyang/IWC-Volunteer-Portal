@@ -11,6 +11,7 @@ Volunteer portal with features including:
 -volunteer hours tracker tab
 
 
+Created with javascript, react, and bootstrap. Database hosted on firebase.
 
 https://user-images.githubusercontent.com/84421650/147722032-7ed4638e-75ee-4e62-8b65-2b990bc6dac2.mov
 
