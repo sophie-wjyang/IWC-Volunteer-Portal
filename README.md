@@ -1,6 +1,6 @@
 # IWC Volunteer Portal
 
-This is a volunteer portal for Impact Without Contact, a federally registered, international COVID-relief NPO. Features include:
+A volunteer portal for Impact Without Contact, a federally registered, international COVID-relief NPO. Features include:
 
 - volunteer signup form and quiz, where they can fill out their skills, hobbies, and sector(s) they're interested in helping out in
 - volunteer dashboard with the volunteer's profile and personalized recommendations for volunteering opportunities based on their data
